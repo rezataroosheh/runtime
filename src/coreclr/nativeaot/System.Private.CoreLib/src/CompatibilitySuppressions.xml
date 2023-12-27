@@ -914,6 +914,30 @@
     <Target>M:System.Reflection.MethodBase.GetParametersAsSpan</Target>
   </Suppression>
   <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:System.IO.TextReader.DisposeAsync</Target>
+    <Left>ref/net9.0/System.Private.CoreLib.dll</Left>
+    <Right>lib/net9.0/System.Private.CoreLib.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.IO.StreamReader</Target>
+    <Left>ref/net9.0/System.Private.CoreLib.dll</Left>
+    <Right>lib/net9.0/System.Private.CoreLib.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.IO.StringReader</Target>
+    <Left>ref/net9.0/System.Private.CoreLib.dll</Left>
+    <Right>lib/net9.0/System.Private.CoreLib.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:System.IO.TextReader</Target>
+    <Left>ref/net9.0/System.Private.CoreLib.dll</Left>
+    <Right>lib/net9.0/System.Private.CoreLib.dll</Right>
+  </Suppression>
+  <Suppression>
     <DiagnosticId>CP0015</DiagnosticId>
     <Target>M:System.Diagnostics.Tracing.EventSource.Write``1(System.String,``0):[T:System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute]</Target>
   </Suppression>

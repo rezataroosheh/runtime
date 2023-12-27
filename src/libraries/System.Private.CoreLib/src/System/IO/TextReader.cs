@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +18,7 @@ namespace System.IO
     //
     // This class is intended for character input, not bytes.
     // There are methods on the Stream class for reading bytes.
-    public abstract partial class TextReader : MarshalByRefObject, IDisposable
+    public abstract partial class TextReader : MarshalByRefObject, IDisposable, IAsyncDisposable
     {
         // Create our own instance to avoid static field initialization order problems on Mono.
         public static readonly TextReader Null = new StreamReader.NullStreamReader();
@@ -38,6 +39,19 @@ namespace System.IO
 
         protected virtual void Dispose(bool disposing)
         {
+        }
+
+        public virtual ValueTask DisposeAsync()
+        {
+            try
+            {
+                Dispose();
+                return default;
+            }
+            catch (Exception exc)
+            {
+                return ValueTask.FromException(exc);
+            }
         }
 
         // Returns the next available character without actually reading it from

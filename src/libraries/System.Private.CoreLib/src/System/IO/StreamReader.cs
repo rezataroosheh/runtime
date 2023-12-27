@@ -268,6 +268,47 @@ namespace System.IO
             }
         }
 
+        public override ValueTask DisposeAsync() =>
+            GetType() != typeof(StreamReader) ?
+                base.DisposeAsync() :
+                DisposeAsyncCore();
+
+        private async ValueTask DisposeAsyncCore()
+        {
+            // Same logic as in Dispose(), but with calling async dispose.
+            Debug.Assert(GetType() == typeof(StreamReader));
+
+            if (_disposed)
+            {
+                return;
+            }
+            _disposed = true;
+
+            try
+            {
+                // Dispose of our resources if this StreamReader is closable.
+                if (_closable)
+                {
+                    try
+                    {
+                        // Note that Stream.DisposeAsync() can potentially throw here. So we need to
+                        // ensure cleaning up internal resources, inside the finally block.
+                        await _stream.DisposeAsync().ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        _charPos = 0;
+                        _charLen = 0;
+                        base.Dispose(disposing: true);
+                    }
+                }
+            }
+            finally
+            {
+                GC.SuppressFinalize(this);
+            }
+        }
+
         public virtual Encoding CurrentEncoding => _encoding;
 
         public virtual Stream BaseStream => _stream;
